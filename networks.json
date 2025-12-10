@@ -3,6 +3,9 @@
     "NFTMarketplace": {
       "address": "0x1Ed2E25EaF1D87653A42B8e89A120877d3Fc757b",
       "startBlock": 9808997
+    },
+    "WhitelistManager": {
+      "address": "0x7A0c8c02a4936AeBC408bAbAd3d9f222C2FAA056"
     }
   }
 }

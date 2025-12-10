@@ -29,6 +29,11 @@ coverage.json
 # Typechain
 typechain
 typechain-types
-
+yarn.lock
 # Hardhat files
 cache
+
+# IDEs
+.vscode
+.idea
+.cursor
