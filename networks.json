@@ -5,7 +5,8 @@
       "startBlock": 9808997
     },
     "WhitelistManager": {
-      "address": "0x7A0c8c02a4936AeBC408bAbAd3d9f222C2FAA056"
+      "address": "0x7A0c8c02a4936AeBC408bAbAd3d9f222C2FAA056",
+      "startBlock": 9809009
     }
   }
 }
