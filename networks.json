@@ -1,12 +1,12 @@
 {
   "sepolia": {
     "NFTMarketplace": {
-      "address": "0x1Ed2E25EaF1D87653A42B8e89A120877d3Fc757b",
-      "startBlock": 9808997
+      "address": "0xe64C5b1052D699fF47A85E143e645069cAC8B967",
+      "startBlock": 9871864
     },
     "WhitelistManager": {
-      "address": "0x7A0c8c02a4936AeBC408bAbAd3d9f222C2FAA056",
-      "startBlock": 9809009
+      "address": "0x96Dc58bC9F5f06403a814A0b7dd80923d06100E6",
+      "startBlock": 9871897
     }
   }
 }

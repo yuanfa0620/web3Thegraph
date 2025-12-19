@@ -2,13 +2,17 @@ import {
   FeesWithdrawn as FeesWithdrawnEvent,
   MarketplaceSet as MarketplaceSetEvent,
   OwnershipTransferred as OwnershipTransferredEvent,
+  Paused as PausedEvent,
+  Unpaused as UnpausedEvent,
   WhitelistAdded as WhitelistAddedEvent,
   WhitelistFeeSet as WhitelistFeeSetEvent,
 } from "../generated/WhitelistManager/WhitelistManager"
 import {
   FeesWithdrawn,
   MarketplaceSet,
-  OwnershipTransferred,
+  WhitelistManagerOwnershipTransferred,
+  WhitelistManagerPaused,
+  WhitelistManagerUnpaused,
   WhitelistAdded,
   WhitelistFeeSet,
 } from "../generated/schema"
@@ -43,11 +47,37 @@ export function handleMarketplaceSet(event: MarketplaceSetEvent): void {
 export function handleOwnershipTransferred(
   event: OwnershipTransferredEvent,
 ): void {
-  let entity = new OwnershipTransferred(
+  let entity = new WhitelistManagerOwnershipTransferred(
     event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
   entity.previousOwner = event.params.previousOwner
   entity.newOwner = event.params.newOwner
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handlePaused(event: PausedEvent): void {
+  let entity = new WhitelistManagerPaused(
+    event.transaction.hash.concatI32(event.logIndex.toI32()),
+  )
+  entity.account = event.params.account
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleUnpaused(event: UnpausedEvent): void {
+  let entity = new WhitelistManagerUnpaused(
+    event.transaction.hash.concatI32(event.logIndex.toI32()),
+  )
+  entity.account = event.params.account
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
