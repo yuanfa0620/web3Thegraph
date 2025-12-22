@@ -28,9 +28,15 @@ dataSources:
         - PriceSet
         - Unpaused
         - WhitelistManagerSet
+        - WhitelistedNFT
+        - Order
+        - ActiveOrder
+        - SoldOrder
       abis:
         - name: NFTMarketplace
           file: ./abis/NFTMarketplace.json
+        - name: ERC721
+          file: ./abis/ERC721.json
       eventHandlers:
         - event: EmergencyWithdrawAll(uint256)
           handler: handleEmergencyWithdrawAll
@@ -77,9 +83,12 @@ dataSources:
         - WhitelistManagerUnpaused
         - WhitelistAdded
         - WhitelistFeeSet
+        - WhitelistedNFT
       abis:
         - name: WhitelistManager
           file: ./abis/WhitelistManager.json
+        - name: ERC721
+          file: ./abis/ERC721.json
       eventHandlers:
         - event: FeesWithdrawn(indexed address,uint256)
           handler: handleFeesWithdrawn

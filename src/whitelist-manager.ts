@@ -15,7 +15,9 @@ import {
   WhitelistManagerUnpaused,
   WhitelistAdded,
   WhitelistFeeSet,
+  WhitelistedNFT,
 } from "../generated/schema"
+import { ERC721 } from "../generated/NFTMarketplace/ERC721"
 
 export function handleFeesWithdrawn(event: FeesWithdrawnEvent): void {
   let entity = new FeesWithdrawn(
@@ -87,6 +89,7 @@ export function handleUnpaused(event: UnpausedEvent): void {
 }
 
 export function handleWhitelistAdded(event: WhitelistAddedEvent): void {
+  // 保存事件实体
   let entity = new WhitelistAdded(
     event.transaction.hash.concatI32(event.logIndex.toI32()),
   )
@@ -100,6 +103,36 @@ export function handleWhitelistAdded(event: WhitelistAddedEvent): void {
   entity.transactionHash = event.transaction.hash
 
   entity.save()
+
+  // 创建或更新 WhitelistedNFT 实体
+  let nftContractAddress = event.params.nftContract
+  let whitelistedNFT = WhitelistedNFT.load(nftContractAddress)
+  
+  if (whitelistedNFT == null) {
+    whitelistedNFT = new WhitelistedNFT(nftContractAddress)
+  }
+  
+  whitelistedNFT.nftContract = nftContractAddress
+  whitelistedNFT.platformFeeRate = event.params.platformFeeRate
+  whitelistedNFT.isActive = true
+  whitelistedNFT.addedAt = event.block.timestamp
+  whitelistedNFT.addedBlockNumber = event.block.number
+  whitelistedNFT.removedAt = null
+  whitelistedNFT.removedBlockNumber = null
+
+  // 尝试获取 NFT 合约的 name 和 symbol
+  let erc721Contract = ERC721.bind(nftContractAddress)
+  let nameResult = erc721Contract.try_name()
+  if (!nameResult.reverted) {
+    whitelistedNFT.name = nameResult.value
+  }
+  
+  let symbolResult = erc721Contract.try_symbol()
+  if (!symbolResult.reverted) {
+    whitelistedNFT.symbol = symbolResult.value
+  }
+
+  whitelistedNFT.save()
 }
 
 export function handleWhitelistFeeSet(event: WhitelistFeeSetEvent): void {
